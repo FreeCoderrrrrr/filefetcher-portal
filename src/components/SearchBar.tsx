@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export const SearchBar = () => {
   const [url, setUrl] = useState("");
@@ -17,13 +18,22 @@ export const SearchBar = () => {
 
     setIsLoading(true);
     try {
-      // Here we'll add the actual video fetching logic later
-      console.log("Fetching video info for:", url);
-      toast.success("Link processed successfully!");
-      // For now just simulate a delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Insert the video into the database
+      const { data, error } = await supabase
+        .from('videos')
+        .insert([
+          { url: url.trim() }
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      console.log("Video entry created:", data);
+      toast.success("Link added successfully! Processing will begin shortly.");
+      setUrl("");
     } catch (error) {
-      console.error("Error fetching video:", error);
+      console.error("Error processing video:", error);
       toast.error("Failed to process the link. Please try again.");
     } finally {
       setIsLoading(false);

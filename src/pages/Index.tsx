@@ -1,15 +1,11 @@
 import { Hero } from "@/components/Hero";
-import { Features } from "@/components/Features";
-import { HowItWorks } from "@/components/HowItWorks";
-import { Footer } from "@/components/Footer";
+import { VideoList } from "@/components/VideoList";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
       <Hero />
-      <Features />
-      <HowItWorks />
-      <Footer />
+      <VideoList />
     </div>
   );
 };
